@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: Lucene-Demo
+
+server:
+  port: 8088
+
+api:
+  prefix: /api/v1
