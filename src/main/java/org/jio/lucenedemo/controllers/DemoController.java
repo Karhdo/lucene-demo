@@ -3,7 +3,7 @@ package org.jio.lucenedemo.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +35,7 @@ public class DemoController {
     @Operation(
             summary = "Search Lucene API",
             description = "Search documents using Lucene based on search phrase.",
-            requestBody = @RequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Sample request body",
                     content = @Content(schema = @Schema(
                             example = "{\n" +
@@ -46,7 +47,7 @@ public class DemoController {
     )
     @PostMapping("/luceneSearch")
     public ResponseEntity<?> luceneSearch(
-            @Valid SearchLuceneResquest resquest,
+            @Valid @RequestBody SearchLuceneResquest resquest,
             BindingResult result
     ) throws IOException, ParseException {
         ApiResponse apiResponse = new ApiResponse();
