@@ -16,6 +16,7 @@ public class SearchService implements ISearchService{
     @Override
     public SearchLuceneResponse search(SearchLuceneResquest resquest) throws IOException, ParseException {
         String asciiText = LuceneUtil.convertToAsciiUsingLucene(resquest.getText());
+        
         boolean result = LuceneUtil.doesTextSatisfySearch(asciiText, resquest.getSearchPhrase());
 
         return SearchLuceneResponse.builder()
