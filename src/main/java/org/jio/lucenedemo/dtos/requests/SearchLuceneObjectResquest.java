@@ -7,16 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class SearchLuceneResquest {
-
+public class SearchLuceneObjectResquest {
     @NotNull(message = "text not nulll")
     private String text;
 
     @NotNull(message = "searchPhrases not nulll")
-    private List<String> searchPhrases;
+    private List<SearchPhraseRequest> searchPhrases;
 }

@@ -5,11 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 public class SearchLuceneResponse {
 
-    private boolean check;
+    private HashMap<String, Boolean> mapCheck;
+
+    private HashMap<Integer, Boolean> mapCheckV2;
+
+    //private boolean check;
 }
