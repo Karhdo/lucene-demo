@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jio.lucenedemo.dtos.requests.DocumentDtoRequest;
 
 import java.util.HashMap;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,9 +15,8 @@ import java.util.HashMap;
 @Builder
 public class SearchLuceneResponse {
 
-    private HashMap<String, Boolean> mapCheck;
+    private List<DocumentDtoRequest> matchingDocuments;
 
-    private HashMap<Integer, Boolean> mapCheckV2;
+    private boolean check;
 
-    //private boolean check;
 }

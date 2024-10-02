@@ -15,8 +15,8 @@ import java.util.List;
 public class SearchLuceneResquest {
 
     @NotNull(message = "text not nulll")
-    private String text;
+    private String query;
 
     @NotNull(message = "searchPhrases not nulll")
-    private List<String> searchPhrases;
+    private List<DocumentDtoRequest> searchPhrases;
 }

@@ -1,57 +1,66 @@
 package org.jio.lucenedemo.services;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.jio.lucenedemo.dtos.requests.SearchLuceneObjectResquest;
-import org.jio.lucenedemo.dtos.requests.SearchLuceneResquest;
-import org.jio.lucenedemo.dtos.requests.SearchPhraseRequest;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.RAMDirectory;
+import org.jio.lucenedemo.configs.CustomAnalyzer;
+import org.jio.lucenedemo.dtos.requests.*;
 import org.jio.lucenedemo.dtos.responses.SearchLuceneResponse;
-import org.jio.lucenedemo.utils.LuceneUtil;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class SearchService implements ISearchService{
 
     @Override
-    public SearchLuceneResponse search(SearchLuceneResquest resquest) throws IOException, ParseException {
-        String asciiText = LuceneUtil.convertToAsciiUsingLucene(resquest.getText());
+    public SearchLuceneResponse search(SearchLuceneResquest request) throws IOException, ParseException {
+        //var
+        List<DocumentDtoRequest> matchingDocuments = new ArrayList<>();
+        Map<String, DocumentDtoRequest> searchMap = new HashMap<>();
 
-        //boolean result = LuceneUtil.doesTextSatisfySearch(asciiText, resquest.getSearchPhrase());
+        RAMDirectory index = new RAMDirectory();
+        CustomAnalyzer analyzer = new CustomAnalyzer();
+        IndexWriterConfig config = new IndexWriterConfig(analyzer);
+        IndexWriter writer = new IndexWriter(index, config);
 
-        HashMap<String, Boolean> mapCheck = new HashMap<>();
+        for (DocumentDtoRequest dto : request.getSearchPhrases()) {
+            searchMap.put(dto.getId(), dto);
+            writer.addDocument(dto.toDocument());
+        }
+        writer.close();
 
-        for (String search : resquest.getSearchPhrases()) {
-            boolean result = LuceneUtil.doesTextSatisfySearch(asciiText,search);
-            mapCheck.put(search, result);
 
+        String[] fields = {"search_text", "mention_type"};
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
+        Query query = parser.parse(request.getQuery());
+        IndexSearcher searcher = new IndexSearcher(DirectoryReader.open(index));
+
+        TopDocs results = searcher.search(query, 10);
+        ScoreDoc[] hits = results.scoreDocs;
+
+        for (ScoreDoc hit : hits) {
+            Document doc = searcher.doc(hit.doc);
+            String foundId = doc.get("id");
+
+            if (searchMap.containsKey(foundId)) {
+                matchingDocuments.add(searchMap.get(foundId));
+            }
         }
 
         return SearchLuceneResponse.builder()
-                .mapCheck(mapCheck)
-                .build();
-    }
-
-    @Override
-    public SearchLuceneResponse searchV2(SearchLuceneObjectResquest resquest) throws IOException, ParseException {
-        String asciiText = LuceneUtil.convertToAsciiUsingLucene(resquest.getText());
-
-        //boolean result = LuceneUtil.doesTextSatisfySearch(asciiText, resquest.getSearchPhrase());
-
-        HashMap<Integer, Boolean> mapCheck = new HashMap<>();
-
-        for (SearchPhraseRequest search : resquest.getSearchPhrases()) {
-            boolean result = LuceneUtil.doesTextSatisfySearch(asciiText,search.getPhrase());
-            mapCheck.put(search.getId(), result);
-
-        }
-
-        return SearchLuceneResponse.builder()
-                .mapCheckV2(mapCheck)
+                .matchingDocuments(matchingDocuments)
                 .build();
     }
 }
