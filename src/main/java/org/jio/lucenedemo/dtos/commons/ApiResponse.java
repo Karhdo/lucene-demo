@@ -14,7 +14,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ApiResponse<T> {
     private StatusEnum status;
-    private T payload;
+    private T data;
     private Map<String, String> error;
     private Map<String, Object> metadata;
     @JsonProperty("message")
@@ -25,12 +25,12 @@ public class ApiResponse<T> {
 
     public void ok(T data) {
         this.status = StatusEnum.SUCCESS;
-        this.payload = data;
+        this.data = data;
     }
 
     public void ok(T data, HashMap<String, Object> metadata) {
         this.status = StatusEnum.SUCCESS;
-        this.payload = data;
+        this.data = data;
         this.metadata = metadata;
     }
 
@@ -41,6 +41,6 @@ public class ApiResponse<T> {
 
     public void noContent(){
         this.status = StatusEnum.NO_CONTENT;
-        this.payload = null;
+        this.data = null;
     }
 }

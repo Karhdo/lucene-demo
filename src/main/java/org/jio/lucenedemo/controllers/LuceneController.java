@@ -4,13 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.jio.lucenedemo.dtos.commons.ApiResponse;
-import org.jio.lucenedemo.dtos.requests.SearchLuceneResquest;
+import org.jio.lucenedemo.dtos.requests.SearchLuceneRequest;
 import org.jio.lucenedemo.dtos.responses.SearchLuceneResponse;
 import org.jio.lucenedemo.services.ISearchService;
 import org.jio.lucenedemo.utils.ValidatorUtil;
@@ -25,9 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("${api.prefix}/lucenes")
+@RequestMapping("lucene-search")
 @RequiredArgsConstructor
-public class DemoController {
+@Tag(name = "Lucene Search", description = "Controller for Lucene search operations")
+public class LuceneController {
 
     private final ValidatorUtil validatorUtil;
     private final ISearchService searchService;
@@ -41,7 +43,7 @@ public class DemoController {
                     content = @Content(schema = @Schema(
                             example = "{\n" +
                                     "  \"query\": \"#milobotphienbangioihan OR ((milo Mllo ((\\\"mi lo\\\" \\\"mylo\\\") AND (\\\"dynamind\\\" \\\"SEA Games\\\" \\\"SEAGames\\\" \\\"am nong\\\" \\\"sua\\\" \\\"balo\\\" \\\"ballo\\\" \\\"binh nuoc\\\" \\\"the thao\\\" \\\"nang luong\\\" \\\"nap van\\\" \\\"nha vo dich\\\" \\\"ben bi\\\" \\\"#DànhChoGiớiTrẻ\\\" \\\"#ProteinCanxi\\\" \\\"#HànhTrìnhChinhPhục\\\" \\\"Nang luong va Y Chi de thanh cong\\\" \\\"ý chí\\\" \\\"#TapTrungToiNoc\\\" \\\"học viện thể thao activ\\\" \\\"#hocvienthethao\\\" \\\"#VuTruNangDong\\\" \\\"#TUYENTHUVUTRUNANGDONG\\\" \\\"Năng lượng tự nhiên để cao lớn vươn xa\\\" \\\"#nangluong tunhien\\\" \\\"#caolonvuonxa\\\" \\\"#Nangluongchogioitre\\\" \\\"Năng Lượng cho giới trẻ\\\" \\\"cao lãnh\\\" \\\"đồng tháp\\\" \\\"gáo gồng\\\" \\\"gáo giồng\\\"))) AND -(\\\"milo yiannopoulos\\\" \\\"wrote\\\" \\\"nitro\\\" \\\"CS Go\\\" \\\"uống pepsi\\\" \\\"cube\\\" \\\"baby milo\\\" \\\"petshop\\\" \\\"sdt\\\" \\\"hotline\\\" \\\"hot line\\\" \\\"shop\\\" \\\"ship\\\"))\",\n" +
-                                    "  \"searchPhrases\": [\n" +
+                                    "  \"mentions\": [\n" +
                                     "    {\n" +
                                     "      \"id\": \"0a4a4d4b-4087-5c2c-990a-5176ad67dbe9\",\n" +
                                     "      \"link\": \"instagram.com/p/C_2KstLIfrr#18070142818580059\",\n" +
@@ -85,15 +87,39 @@ public class DemoController {
                                     "      ],\n" +
                                     "      \"attachment\": \"{\\\"parent_info\\\":{\\\"link\\\":\\\"instagram.com/p/C_9-nDnIW3A/\\\",\\\"title\\\":\\\"Najpiękniejsza\\\"}}\",\n" +
                                     "      \"is_to_topic\": false\n" +
+                                    "    },\n" +
+                                    "    {\n" +
+                                    "      \"id\": \"b3246ad2-60c3-5575-beda-bb74392ef1cc\",\n" +
+                                    "      \"link\": \"instagram.com/p/C_mVXuTxmzn#17913559919908551\",\n" +
+                                    "      \"id_source\": \"ig_2899406141\",\n" +
+                                    "      \"id_reference\": \"6217083b-0807-5bf8-9133-c2a177097534\",\n" +
+                                    "      \"id_parent_comment\": \"e96e6e78-1229-5fd9-a635-875ce117139a\",\n" +
+                                    "      \"views\": 0,\n" +
+                                    "      \"likes\": 0,\n" +
+                                    "      \"comments\": 0,\n" +
+                                    "      \"shares\": 0,\n" +
+                                    "      \"rating_score\": 0,\n" +
+                                    "      \"engagement_total\": 0,\n" +
+                                    "      \"engagement_s_c\": 0,\n" +
+                                    "      \"identity\": \"ig_2899406141\",\n" +
+                                    "      \"identity_name\": \"Jaja_NakShare\",\n" +
+                                    "      \"mention_type\": 2,\n" +
+                                    "      \"search_text\": [\n" +
+                                    "        \"\",\n" +
+                                    "        \"@kitkat_nelfei yes u should\"\n" +
+                                    "      ],\n" +
+                                    "      \"attachment\": \"{\\\"parent_info\\\":{\\\"link\\\":\\\"instagram.com/p/C_mVXuTxmzn/\\\",\\\"title\\\":\\\"Koranggggg!! Jangan\\\"}}\",\n" +
+                                    "      \"is_to_topic\": false\n" +
                                     "    }\n" +
                                     "  ]\n" +
                                     "}"
                     ))
             )
     )
-    @PostMapping("/luceneSearch")
+
+    @PostMapping("")
     public ResponseEntity<?> luceneSearch(
-            @Valid @RequestBody SearchLuceneResquest resquest,
+            @Valid @RequestBody SearchLuceneRequest request,
             BindingResult result
     ) throws IOException, ParseException {
         ApiResponse apiResponse = new ApiResponse();
@@ -103,7 +129,7 @@ public class DemoController {
             return ResponseEntity.badRequest().body(apiResponse);
         }
 
-        SearchLuceneResponse response = searchService.search(resquest);
+        SearchLuceneResponse response = searchService.search(request);
 
         apiResponse.ok(response.getMatchingDocuments());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

@@ -27,7 +27,7 @@ import java.util.*;
 public class SearchService implements ISearchService {
 
     @Override
-    public SearchLuceneResponse search(SearchLuceneResquest request) throws IOException, ParseException {
+    public SearchLuceneResponse search(SearchLuceneRequest request) throws IOException, ParseException {
         //var
         List<DocumentDtoRequest> matchingDocuments = new ArrayList<>();
         Map<String, DocumentDtoRequest> searchMap = new HashMap<>();
@@ -41,18 +41,17 @@ public class SearchService implements ISearchService {
         try {
             writer = new IndexWriter(index, config);
 
-            // Thêm các tài liệu vào index
-            for (DocumentDtoRequest dto : request.getSearchPhrases()) {
+            for (DocumentDtoRequest dto : request.getMentions()) {
                 searchMap.put(dto.getId(), dto);
                 writer.addDocument(dto.toDocument());
             }
-            writer.close();  // Đóng IndexWriter sau khi hoàn thành ghi
+            writer.close();
 
-            // Tìm kiếm
+
             String[] fields = {"search_text", "mention_type"};
             MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, analyzer);
             Query query = parser.parse(request.getQuery());
-            reader = DirectoryReader.open(index);  // Mở DirectoryReader cho việc tìm kiếm
+            reader = DirectoryReader.open(index);  // Open DirectoryReader for search
             IndexSearcher searcher = new IndexSearcher(reader);
 
             TopDocs results = searcher.search(query, 10);
@@ -69,19 +68,20 @@ public class SearchService implements ISearchService {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            // Đảm bảo đóng các tài nguyên để giải phóng bộ nhớ
+
             if (writer != null && writer.isOpen()) {
-                writer.close(); // Đóng IndexWriter
+                writer.close();
             }
             if (reader != null) {
-                reader.close(); // Đóng DirectoryReader
+                reader.close();
             }
-            //index.close(); // Đóng RAMDirectory để giải phóng bộ nhớ
+            index.close();
         }
+
+        index.close();
 
         return SearchLuceneResponse.builder()
                 .matchingDocuments(matchingDocuments)
                 .build();
     }
-
 }

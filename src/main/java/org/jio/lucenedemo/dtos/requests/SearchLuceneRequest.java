@@ -12,11 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class SearchLuceneResquest {
+public class SearchLuceneRequest {
 
     @NotNull(message = "text not nulll")
     private String query;
 
-    @NotNull(message = "searchPhrases not nulll")
-    private List<DocumentDtoRequest> searchPhrases;
+    @NotNull(message = "mentions not nulll")
+    private List<DocumentDtoRequest> mentions;
 }
