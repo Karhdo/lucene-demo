@@ -33,7 +33,7 @@ public class DocumentDtoRequest {
     private String mention_type;
     private List<String> search_text;
     private String attachment;
-    private String isToTopic;
+    private boolean isToTopic;
 
     public Document toDocument() {
         Document doc = new Document();
