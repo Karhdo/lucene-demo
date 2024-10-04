@@ -14,9 +14,9 @@ import java.util.List;
 @Builder
 public class SearchLuceneRequest {
 
-    @NotNull(message = "text not nulll")
+    @NotNull(message = "Query not null")
     private String query;
 
-    @NotNull(message = "mentions not nulll")
+    @NotNull(message = "Mentions not null")
     private List<DocumentDtoRequest> mentions;
 }
