@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Demo lucene",
+                title = "YounetMedia",
                 version = "1.0.0",
-                description = "Ứng dụng Search"
+                description = "API 1.0"
         ),
         servers = {
-                @Server(url = "http://localhost:8088", description = "Local Development Server"),
+
         }
 )
 @Configuration
