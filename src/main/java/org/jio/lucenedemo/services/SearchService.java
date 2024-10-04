@@ -35,7 +35,7 @@ public class SearchService implements ISearchService{
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         IndexWriter writer = new IndexWriter(index, config);
 
-        for (DocumentDtoRequest dto : request.getSearchPhrases()) {
+        for (DocumentDtoRequest dto : request.getMentions()) {
             searchMap.put(dto.getId(), dto);
             writer.addDocument(dto.toDocument());
         }
@@ -58,6 +58,8 @@ public class SearchService implements ISearchService{
                 matchingDocuments.add(searchMap.get(foundId));
             }
         }
+
+        index.close();
 
         return SearchLuceneResponse.builder()
                 .matchingDocuments(matchingDocuments)

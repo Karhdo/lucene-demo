@@ -17,6 +17,6 @@ public class SearchLuceneResquest {
     @NotNull(message = "text not nulll")
     private String query;
 
-    @NotNull(message = "searchPhrases not nulll")
-    private List<DocumentDtoRequest> searchPhrases;
+    @NotNull(message = "mentions not nulll")
+    private List<DocumentDtoRequest> mentions;
 }

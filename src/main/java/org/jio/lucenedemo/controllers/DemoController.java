@@ -39,7 +39,7 @@ public class DemoController {
                     content = @Content(schema = @Schema(
                             example = "{\n" +
                                     "  \"query\": \"#milobotphienbangioihan OR ((milo Mllo ((\\\"mi lo\\\" \\\"mylo\\\") AND (\\\"dynamind\\\" \\\"SEA Games\\\" \\\"SEAGames\\\" \\\"am nong\\\" \\\"sua\\\" \\\"balo\\\" \\\"ballo\\\" \\\"binh nuoc\\\" \\\"the thao\\\" \\\"nang luong\\\" \\\"nap van\\\" \\\"nha vo dich\\\" \\\"ben bi\\\" \\\"#DànhChoGiớiTrẻ\\\" \\\"#ProteinCanxi\\\" \\\"#HànhTrìnhChinhPhục\\\" \\\"Nang luong va Y Chi de thanh cong\\\" \\\"ý chí\\\" \\\"#TapTrungToiNoc\\\" \\\"học viện thể thao activ\\\" \\\"#hocvienthethao\\\" \\\"#VuTruNangDong\\\" \\\"#TUYENTHUVUTRUNANGDONG\\\" \\\"Năng lượng tự nhiên để cao lớn vươn xa\\\" \\\"#nangluong tunhien\\\" \\\"#caolonvuonxa\\\" \\\"#Nangluongchogioitre\\\" \\\"Năng Lượng cho giới trẻ\\\" \\\"cao lãnh\\\" \\\"đồng tháp\\\" \\\"gáo gồng\\\" \\\"gáo giồng\\\"))) AND -(\\\"milo yiannopoulos\\\" \\\"wrote\\\" \\\"nitro\\\" \\\"CS Go\\\" \\\"uống pepsi\\\" \\\"cube\\\" \\\"baby milo\\\" \\\"petshop\\\" \\\"sdt\\\" \\\"hotline\\\" \\\"hot line\\\" \\\"shop\\\" \\\"ship\\\"))\",\n" +
-                                    "  \"searchPhrases\": [\n" +
+                                    "  \"mentions\": [\n" +
                                     "    {\n" +
                                     "      \"id\": \"0a4a4d4b-4087-5c2c-990a-5176ad67dbe9\",\n" +
                                     "      \"link\": \"instagram.com/p/C_2KstLIfrr#18070142818580059\",\n" +
