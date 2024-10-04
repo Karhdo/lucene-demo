@@ -25,7 +25,7 @@ import java.util.*;
 public class SearchService implements ISearchService{
 
     @Override
-    public SearchLuceneResponse search(SearchLuceneResquest request) throws IOException, ParseException {
+    public SearchLuceneResponse search(SearchLuceneRequest request) throws IOException, ParseException {
         //var
         List<DocumentDtoRequest> matchingDocuments = new ArrayList<>();
         Map<String, DocumentDtoRequest> searchMap = new HashMap<>();

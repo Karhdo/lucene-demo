@@ -61,9 +61,9 @@ In your project, the `SearchService` class implements the search functionality u
 @RequiredArgsConstructor
 public class SearchService implements ISearchService {
     @Override
-    public SearchLuceneResponse search(SearchLuceneResquest resquest) throws IOException, ParseException {
-        String asciiText = LuceneUtil.convertToAsciiUsingLucene(resquest.getText());
-        boolean result = LuceneUtil.doesTextSatisfySearch(asciiText, resquest.getSearchPhrase());
+    public SearchLuceneResponse search(SearchLuceneRequest request) throws IOException, ParseException {
+        String asciiText = LuceneUtil.convertToAsciiUsingLucene(request.getText());
+        boolean result = LuceneUtil.doesTextSatisfySearch(asciiText, request.getSearchPhrase());
         return SearchLuceneResponse.builder().check(result).build();
     }
 }

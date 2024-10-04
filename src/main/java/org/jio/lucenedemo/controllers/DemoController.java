@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.jio.lucenedemo.dtos.commons.ApiResponse;
-import org.jio.lucenedemo.dtos.requests.SearchLuceneResquest;
+import org.jio.lucenedemo.dtos.requests.SearchLuceneRequest;
 import org.jio.lucenedemo.dtos.responses.SearchLuceneResponse;
 import org.jio.lucenedemo.services.ISearchService;
 import org.jio.lucenedemo.utils.ValidatorUtil;
@@ -91,7 +91,7 @@ public class DemoController {
     )
     @PostMapping("/luceneSearch")
     public ResponseEntity<?> luceneSearch(
-            @Valid @RequestBody SearchLuceneResquest resquest,
+            @Valid @RequestBody SearchLuceneRequest request,
             BindingResult result
     ) throws IOException, ParseException {
         ApiResponse apiResponse = new ApiResponse();
@@ -101,7 +101,7 @@ public class DemoController {
             return ResponseEntity.badRequest().body(apiResponse);
         }
 
-        SearchLuceneResponse response = searchService.search(resquest);
+        SearchLuceneResponse response = searchService.search(request);
 
         apiResponse.ok(response.getMatchingDocuments());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);

@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class SearchLuceneResquest {
+public class SearchLuceneRequest {
 
     @NotNull(message = "text not nulll")
     private String query;
